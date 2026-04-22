@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Shisha Bar</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0d0d0d;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    background: #111;
+    padding: 15px;
+    color: #f39c12;
+}
+
+.container {
+    padding: 10px;
+}
+
+.card {
+    background: #1a1a1a;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.badge {
+    color: #0f0;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 Heute verfügbar 🔥</h1>
+
+<div class="container" id="list"></div>
+
+<script>
+let items = JSON.parse(localStorage.getItem("tabak")) || [];
+
+let list = document.getElementById("list");
+
+if(items.length === 0){
+    list.innerHTML = "<p>Heute noch nichts eingetragen</p>";
+} else {
+    items.forEach(item => {
+        let div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = item;
+        list.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>
