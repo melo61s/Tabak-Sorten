@@ -8,32 +8,56 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial;
-    background: #0d0d0d;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #000, #111);
     color: white;
-    text-align: center;
 }
 
-h1 {
-    background: #111;
-    padding: 15px;
-    color: #f39c12;
+header {
+    text-align: center;
+    padding: 25px;
+    font-size: 26px;
+    font-weight: bold;
+    color: gold;
+    border-bottom: 1px solid #333;
+}
+
+.sub {
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
 }
 
 .container {
-    padding: 10px;
+    padding: 15px;
+}
+
+.category {
+    margin-top: 20px;
+    color: gold;
+    font-size: 18px;
 }
 
 .card {
     background: #1a1a1a;
-    margin: 10px;
+    margin: 10px 0;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 15px;
+    text-align: center;
     font-size: 18px;
+    border: 1px solid #333;
+    box-shadow: 0 0 10px rgba(255,215,0,0.2);
 }
 
 .badge {
     color: #0f0;
+    font-size: 12px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
     font-size: 12px;
 }
 </style>
@@ -41,26 +65,28 @@ h1 {
 
 <body>
 
-<h1>🔥 Heute verfügbar 🔥</h1>
+<header>🔥 Mobile Shisha Bar 🔥</header>
+<div class="sub">Heutige Tabaksorten</div>
 
-<div class="container" id="list"></div>
+<div class="container">
 
-<script>
-let items = JSON.parse(localStorage.getItem("tabak")) || [];
+<div class="category">🍓 Fruchtig</div>
+<div class="card">Erdbeere Minze <div class="badge">Beliebt</div></div>
+<div class="card">Wassermelone Chill</div>
 
-let list = document.getElementById("list");
+<div class="category">❄️ Ice</div>
+<div class="card">Traube Ice</div>
+<div class="card">Zitrone Fresh</div>
 
-if(items.length === 0){
-    list.innerHTML = "<p>Heute noch nichts eingetragen</p>";
-} else {
-    items.forEach(item => {
-        let div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = item;
-        list.appendChild(div);
-    });
-}
-</script>
+<div class="category">💎 Premium</div>
+<div class="card">Love 66</div>
+<div class="card">Black Nana</div>
+
+</div>
+
+<div class="footer">
+Stand: Heute
+</div>
 
 </body>
 </html>
