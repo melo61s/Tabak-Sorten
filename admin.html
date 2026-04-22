@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin</title>
+</head>
+
+<body>
+
+<h1>Admin Panel</h1>
+
+<input id="name" placeholder="Tabak eingeben">
+<button onclick="add()">Hinzufügen</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1-q3xacqIZ2vEMtNBPk8J-sNHdLReiyI",
+  authDomain: "golden61-aa573.firebaseapp.com",
+  projectId: "golden61-aa573",
+  storageBucket: "golden61-aa573.firebasestorage.app",
+  messagingSenderId: "518919160732",
+  appId: "1:518919160732:web:41db365c320d6fb0587e59",
+  measurementId: "G-353V59ENVK"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.add = async function(){
+    const name = document.getElementById("name").value;
+
+    if(name){
+        await addDoc(collection(db, "tabak"), {
+            name: name
+        });
+    }
+}
+</script>
+
+</body>
+</html>
