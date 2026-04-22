@@ -13,39 +13,62 @@
 <input id="name" placeholder="Tabak eingeben">
 <button onclick="addTabak()">Hinzufügen</button>
 
+<div id="list"></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1-q3xacqIZ2vEMtNBPk8J-sNHdLReiyI",
   authDomain: "golden61-aa573.firebaseapp.com",
   projectId: "golden61-aa573",
-  storageBucket: "golden61-aa573.firebasestorage.app",
-  messagingSenderId: "518919160732",
-  appId: "1:518919160732:web:41db365c320d6fb0587e59",
-  measurementId: "G-353V59ENVK"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const list = document.getElementById("list");
+
+// ➕ hinzufügen
 window.addTabak = async function(){
     const name = document.getElementById("name").value;
 
-    if(!name){
-        alert("Bitte etwas eingeben");
-        return;
-    }
+    await addDoc(collection(db, "tabak"), {
+        name: name,
+        status: "verfügbar"
+    });
+}
 
-    try {
-        await addDoc(collection(db, "tabak"), {
-            name: name
-        });
-        alert("Gespeichert ✅");
-    } catch(e){
-        alert("Fehler: " + e.message);
-    }
+// 🔄 live anzeigen + admin funktionen
+onSnapshot(collection(db, "tabak"), (snapshot) => {
+    list.innerHTML = "";
+
+    snapshot.forEach((docItem) => {
+        const data = docItem.data();
+
+        const div = document.createElement("div");
+        div.innerHTML = `
+        <p>${data.name} (${data.status})</p>
+        <button onclick="deleteItem('${docItem.id}')">❌ Löschen</button>
+        <button onclick="toggle('${docItem.id}', '${data.status}')">⚠️ Status ändern</button>
+        `;
+        list.appendChild(div);
+    });
+});
+
+// ❌ löschen
+window.deleteItem = async function(id){
+    await deleteDoc(doc(db, "tabak", id));
+}
+
+// ⚠️ status ändern
+window.toggle = async function(id, current){
+    const newStatus = current === "verfügbar" ? "ausverkauft" : "verfügbar";
+
+    await updateDoc(doc(db, "tabak", id), {
+        status: newStatus
+    });
 }
 </script>
 
