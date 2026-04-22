@@ -11,7 +11,7 @@
 <h1>Admin Panel</h1>
 
 <input id="name" placeholder="Tabak eingeben">
-<button onclick="add()">Hinzufügen</button>
+<button onclick="addTabak()">Hinzufügen</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
@@ -30,14 +30,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.add = async function(){
+window.addTabak = async function(){
     const name = document.getElementById("name").value;
 
-    if(name){
+    if(!name){
+        alert("Bitte etwas eingeben");
+        return;
+    }
+
+    try {
         await addDoc(collection(db, "tabak"), {
             name: name
-          amy Gold : Twist
         });
+        alert("Gespeichert ✅");
+    } catch(e){
+        alert("Fehler: " + e.message);
     }
 }
 </script>
