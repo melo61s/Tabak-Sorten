@@ -17,25 +17,12 @@ header {
     text-align: center;
     padding: 25px;
     font-size: 26px;
-    font-weight: bold;
     color: gold;
     border-bottom: 1px solid #333;
 }
 
-.sub {
-    text-align: center;
-    color: #aaa;
-    font-size: 14px;
-}
-
 .container {
     padding: 15px;
-}
-
-.category {
-    margin-top: 20px;
-    color: gold;
-    font-size: 18px;
 }
 
 .card {
@@ -46,47 +33,121 @@ header {
     text-align: center;
     font-size: 18px;
     border: 1px solid #333;
-    box-shadow: 0 0 10px rgba(255,215,0,0.2);
 }
 
-.badge {
-    color: #0f0;
-    font-size: 12px;
+button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+    background: gold;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+}
+
+.admin {
+    display: none;
+    padding: 15px;
+    background: #111;
+    border-top: 1px solid #333;
 }
 
 .footer {
     text-align: center;
-    margin-top: 20px;
     color: #666;
     font-size: 12px;
+    margin: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>🔥 Mobile Shisha Bar 🔥</header>
-<div class="sub">Heutige Tabaksorten</div>
+<header onclick="openAdmin()">🔥 Mobile Shisha Bar 🔥</header>
 
-<div class="container">
+<div class="container" id="list"></div>
 
-<div class="category">🍓 Fruchtig</div>
-<div class="card">Erdbeere Minze <div class="badge">Beliebt</div></div>
-<div class="card">Wassermelone Chill</div>
+<div class="admin" id="admin">
+    <h2>🔐 Admin</h2>
+    <input type="password" id="pw" placeholder="Passwort">
+    <button onclick="login()">Login</button>
 
-<div class="category">❄️ Ice</div>
-<div class="card">Traube Ice</div>
-<div class="card">Zitrone Fresh</div>
+    <div id="panel" style="display:none;">
+        <h3>Tabak hinzufügen</h3>
+        <input type="text" id="newItem" placeholder="z.B. Traube Ice">
+        <button onclick="add()">Hinzufügen</button>
 
-<div class="category">💎 Premium</div>
-<div class="card">Love 66</div>
-<div class="card">Black Nana</div>
-
+        <h3>Liste</h3>
+        <div id="adminList"></div>
+    </div>
 </div>
 
-<div class="footer">
-Stand: Heute
-</div>
+<div class="footer">Stand: Heute</div>
+
+<script>
+let password = "1234"; // ändern!
+
+let items = JSON.parse(localStorage.getItem("tabak")) || [];
+
+function render(){
+    let list = document.getElementById("list");
+    let adminList = document.getElementById("adminList");
+
+    list.innerHTML = "";
+    adminList.innerHTML = "";
+
+    items.forEach((item, index) => {
+        // Anzeige für Gäste
+        let div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = item;
+        list.appendChild(div);
+
+        // Admin Liste
+        let a = document.createElement("div");
+        a.className = "card";
+        a.innerHTML = item + `<br><button onclick="remove(${index})">❌ Löschen</button>`;
+        adminList.appendChild(a);
+    });
+
+    localStorage.setItem("tabak", JSON.stringify(items));
+}
+
+function add(){
+    let val = document.getElementById("newItem").value;
+    if(val){
+        items.push(val);
+        render();
+    }
+}
+
+function remove(i){
+    items.splice(i, 1);
+    render();
+}
+
+function openAdmin(){
+    let admin = document.getElementById("admin");
+    admin.style.display = admin.style.display === "none" ? "block" : "none";
+}
+
+function login(){
+    let pw = document.getElementById("pw").value;
+    if(pw === password){
+        document.getElementById("panel").style.display = "block";
+    } else {
+        alert("Falsches Passwort");
+    }
+}
+
+render();
+</script>
 
 </body>
 </html>
